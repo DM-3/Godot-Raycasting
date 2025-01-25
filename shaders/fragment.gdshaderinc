@@ -1,4 +1,7 @@
-#include "findClosestHit.gdshaderinc"
+#include "trace.gdshaderinc"
+
+
+const int nRaysPerPixel = 1;
 
 void fragment()
 {
@@ -7,21 +10,24 @@ void fragment()
     ray.direction = normalize(_rayDir);
     ray.invDir = vec3(1.0) / ray.direction;
 
-    // cast ray from camera into scene
-    HitInfo hitInfo = findClosestHit(ray);
+    // trace rays from camera through scene
 
-    // no hit
-    if (hitInfo.objectIndex < 0)
+    vec3 incomingLight = vec3(0);
+    for (int i = 0; i < nRaysPerPixel; i++)
+        incomingLight += trace(ray);
+
+
+    // no hits
+    if (incomingLight == vec3(0))
         discard;
 
-	ALBEDO = vec3(1.0) / hitInfo.distance;
+	ALBEDO = incomingLight / float(nRaysPerPixel);
 
     // cast ray from hit object to light source
 
-    float depth = 1.0;
-    vec4 viewSpaceHitPoint = VIEW_MATRIX * vec4(hitInfo.point, 1.);
-    vec4 clipSpaceHitPoint = PROJECTION_MATRIX * viewSpaceHitPoint;
-    depth = clipSpaceHitPoint.z / clipSpaceHitPoint.w;
-
-    DEPTH = depth < 0.0 ? 1.0 : depth;
+    //float depth = 1.0;
+    //vec4 viewSpaceHitPoint = VIEW_MATRIX * vec4(hitInfo.point, 1.);
+    //vec4 clipSpaceHitPoint = PROJECTION_MATRIX * viewSpaceHitPoint;
+    //depth = clipSpaceHitPoint.z / clipSpaceHitPoint.w;
+    //DEPTH = depth < 0.0 ? 1.0 : depth;
 }

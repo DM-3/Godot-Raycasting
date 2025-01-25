@@ -2,10 +2,12 @@
 #include "ray_t.gdshaderinc"
 #include "hitInfo_t.gdshaderinc"
 #include "rayBoxIntersect.gdshaderinc"
+#include "raySphereIntersect.gdshaderinc"
+#include "shapes/rayShapeIntersect.gdshaderinc"
 
-HitInfo findClosestHit(Ray ray)
+HitInfo findClosestHit(const Ray ray)
 {
-    HitInfo closestHit = HitInfo(1e20, -1, vec3(0.0));
+    HitInfo closestHit = _defaultHitInfo;
 
     for (int i = 0; i < _nObjects; i++)
     {
@@ -19,16 +21,17 @@ HitInfo findClosestHit(Ray ray)
         if (length(d) - obj.boundingVolume.w > closestHit.distance)
             continue;
 
-        // ignore objects whose bounding box is not intersected
         float dist;
-        if (!rayBoxIntersectRel(d, obj.boundingVolume.xyz, ray.invDir, dist))
-            continue;
 
-        // TODO: check intersection against actual shape
-        HitInfo hit = HitInfo(dist, i, vec3(0.0));
+        // ignore objects whose bounding volume is not intersected
+		if (!raySphereIntersectRel(d, obj.boundingVolume.w, ray.direction, dist) || dist > closestHit.distance)
+			continue;
 
-        if (hit.distance < closestHit.distance)
-            closestHit = hit;
+        // check intersection against objects actual shape
+		if (!rayShapeIntersect(i, ray, dist) || dist > closestHit.distance)
+			continue;
+
+        closestHit = HitInfo(dist, i, vec3(0.0), vec3(0.0));
     }
 
     closestHit.point = ray.origin + ray.direction * closestHit.distance;
