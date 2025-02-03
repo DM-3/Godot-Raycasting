@@ -1,5 +1,5 @@
+#include "vertex.gdshaderinc"
 #include "trace.gdshaderinc"
-
 
 const int nRaysPerPixel = 1;
 
@@ -16,14 +16,13 @@ void fragment()
     for (int i = 0; i < nRaysPerPixel; i++)
         incomingLight += trace(ray);
 
-
     // no hits
     if (incomingLight == vec3(0))
         discard;
 
 	ALBEDO = incomingLight / float(nRaysPerPixel);
 
-    // cast ray from hit object to light source
+	// cast ray from hit object to light source
 
     //float depth = 1.0;
     //vec4 viewSpaceHitPoint = VIEW_MATRIX * vec4(hitInfo.point, 1.);

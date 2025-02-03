@@ -1,8 +1,4 @@
-#include "object_t.gdshaderinc"
-#include "ray_t.gdshaderinc"
 #include "hitInfo_t.gdshaderinc"
-#include "rayBoxIntersect.gdshaderinc"
-#include "raySphereIntersect.gdshaderinc"
 #include "shapes/rayShapeIntersect.gdshaderinc"
 
 HitInfo findClosestHit(const Ray ray)
@@ -13,7 +9,7 @@ HitInfo findClosestHit(const Ray ray)
     {
         Object obj = _objects[i];
 
-        vec3 d = obj.transform[3].xyz - ray.origin;
+        vec3 d = ray.origin - obj.transform[3].xyz;
 
         // TODO: filter objects based on direction
 
@@ -24,7 +20,7 @@ HitInfo findClosestHit(const Ray ray)
         float dist;
 
         // ignore objects whose bounding volume is not intersected
-		if (!raySphereIntersectRel(d, obj.boundingVolume.w, ray.direction, dist) || dist > closestHit.distance)
+		if (!raySphereIntersect_rel(d, obj.boundingVolume.w, ray.direction, dist) || dist > closestHit.distance)
 			continue;
 
         // check intersection against objects actual shape

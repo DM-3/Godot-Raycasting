@@ -1,15 +1,18 @@
-#include "res://shaders/ray_t.gdshaderinc"
 #include "res://shaders/object_t.gdshaderinc"
-#include "res://shaders/raySphereIntersect.gdshaderinc"
-#include "res://shaders/rayBoxIntersect.gdshaderinc"
+#include "res://shaders/raymarch.gdshaderinc"
+#include "0_sphere.gdshaderinc"
+#include "1_box.gdshaderinc"
 
 bool rayShapeIntersect(const int objectIndex, const Ray ray, inout float dist)
 {
 	Object obj = _objects[objectIndex];
+	vec3 relPos = ray.origin - obj.transform[3].xyz;
 	switch (obj.shapeType)
 	{
-		case 0: return raySphereIntersect(obj.transform[3].xyz, obj.shapeVars.x, ray, dist);
-		case 1: return rayBoxIntersect(obj.transform[3].xyz, obj.shapeVars.xyz, ray, dist);
+		case 0: return raySphereIntersect_rel(relPos, obj.shapeVars.x, ray.direction, dist);
+		case 1: return rayBoxIntersect_rel(relPos, obj.shapeVars.xyz, ray.invDir, dist);
+		case 2: 
+			return raymarch(relPos, obj.shapeType, obj.shapeVars, ray.direction, dist);
 		default: return false;
 	}
 }

@@ -14,8 +14,7 @@ vec3 trace(Ray ray)
         HitInfo hitInfo = findClosestHit(ray);
         if (hitInfo.objectIndex == -1)
         {
-			if (bool(i))
-				incomingLight += _environmentLight * rayColor;
+			incomingLight += float(i != 0) * _environmentLight * rayColor;
             break;
         }
 		
