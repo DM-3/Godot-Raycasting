@@ -1,6 +1,6 @@
 #include "shapes/shapeSDF.gdshaderinc"
 
-uniform float _maxMarchDistance = 10.0;
+uniform float _maxMarchDistance = 2.0;
 uniform float _marchHitDistance = 0.001;
 uniform int _maxMarchSteps = 70;
 
@@ -19,5 +19,5 @@ bool raymarch(const vec3 pos, const int shapeType, const vec4 shapeVars, const v
 		d > _marchHitDistance && 
 		dist - startDist < _maxMarchDistance);
 	
-	return d < _marchHitDistance;
+	return d < _marchHitDistance || steps == _maxMarchSteps;
 }

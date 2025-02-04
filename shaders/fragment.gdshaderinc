@@ -8,7 +8,8 @@ void fragment()
     Ray ray;
     ray.origin = _rayOrigin;
     ray.direction = normalize(_rayDir);
-    ray.invDir = vec3(1.0) / ray.direction;
+	ray.color = vec3(1.0);
+	ray.light = vec3(0.0);
 
     // trace rays from camera through scene
 

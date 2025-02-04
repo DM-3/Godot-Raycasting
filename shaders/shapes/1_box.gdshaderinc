@@ -10,10 +10,10 @@ float boxSDF(const vec3 pos, const vec3 boxPos, const vec3 boxSize)
 	return length(max(abs(pos - boxPos) - boxSize, 0.0));
 }
 
-bool rayBoxIntersect_rel(const vec3 relPos, const vec3 boxSize, const vec3 rayInvDir, out float dist)
+bool rayBoxIntersect_rel(const vec3 relPos, const vec3 boxSize, const vec3 rayDir, out float dist)
 {
-    vec3 bot = -rayInvDir * (relPos + boxSize);
-    vec3 top = -rayInvDir * (relPos - boxSize);
+	vec3 bot = -(relPos + boxSize) / rayDir;
+	vec3 top = -(relPos - boxSize) / rayDir;
 
     vec4 t;
 	t.xyz = min(top, bot);
@@ -27,5 +27,5 @@ bool rayBoxIntersect_rel(const vec3 relPos, const vec3 boxSize, const vec3 rayIn
 
 bool rayBoxIntersect(const vec3 boxPos, const vec3 boxSize, const Ray ray, out float dist)
 {
-    return rayBoxIntersect_rel(ray.origin - boxPos, boxSize, ray.invDir, dist);
+    return rayBoxIntersect_rel(ray.origin - boxPos, boxSize, ray.direction, dist);
 }

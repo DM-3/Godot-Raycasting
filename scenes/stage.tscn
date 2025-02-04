@@ -8,6 +8,7 @@ shader = ExtResource("1_wdhim")
 shader_parameter/_maxMarchDistance = 10.0
 shader_parameter/_marchHitDistance = 0.001
 shader_parameter/_maxMarchSteps = 70
+shader_parameter/_maxGravitySteps = 100
 shader_parameter/_nMaxBounces = 2
 shader_parameter/_environmentLight = Color(0.607522, 0.829453, 0.983869, 1)
 

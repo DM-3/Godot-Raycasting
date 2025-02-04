@@ -10,7 +10,7 @@ bool rayShapeIntersect(const int objectIndex, const Ray ray, inout float dist)
 	switch (obj.shapeType)
 	{
 		case 0: return raySphereIntersect_rel(relPos, obj.shapeVars.x, ray.direction, dist);
-		case 1: return rayBoxIntersect_rel(relPos, obj.shapeVars.xyz, ray.invDir, dist);
+		case 1: return rayBoxIntersect_rel(relPos, obj.shapeVars.xyz, ray.direction, dist);
 		case 2: 
 			return raymarch(relPos, obj.shapeType, obj.shapeVars, ray.direction, dist);
 		default: return false;

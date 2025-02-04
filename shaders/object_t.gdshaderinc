@@ -15,15 +15,16 @@ struct Object
     
 	// 0: reflective
 	// 1: diffuse
+	// 2: gravitational lense
 	int surfaceType;
 
 	vec3 color;
 };
 
-const int _nObjects = 4;
+const int _nObjects = 5;
 const Object _objects[_nObjects] = { 
 	Object(
-		mat4(1.0), 
+		mat4(vec4(1,0,0,0), vec4(0,1,0,0), vec4(0,0,1,0), vec4(0, 0.1, -1, 0)),
 		vec4(sqrt(0.75)), 
 		2, 
 		vec4(0.5, 0.5, 0.5, 4),
@@ -31,7 +32,7 @@ const Object _objects[_nObjects] = {
 		vec3(0.9, 0.1, 0.1)
 	),
 	Object(
-		mat4(1.0) + mat4(vec4(0), vec4(0), vec4(0), vec4(-1, .5, 1, 0)), 
+		mat4(vec4(1,0,0,0), vec4(0,1,0,0), vec4(0,0,1,0), vec4(-1, .6, 0.2, 0)),
 		vec4(0.5), 
 		0,
 		vec4(0.5),
@@ -39,7 +40,7 @@ const Object _objects[_nObjects] = {
 		vec3(0.5, 1.0, 0.3)
 	),
 	Object(
-		mat4(1.0) + mat4(vec4(0), vec4(0), vec4(0), vec4(0.2, -0.1, 1, 0)),
+		mat4(vec4(1,0,0,0), vec4(0,1,0,0), vec4(0,0,1,0), vec4(0.9, -0.1, 0.1, 0)),
 		vec4(0.3),
 		0,
 		vec4(0.3),
@@ -47,11 +48,19 @@ const Object _objects[_nObjects] = {
 		vec3(0.3, 0.5, 1.0)
 	),
 	Object(
-		mat4(1.0) + mat4(vec4(0), vec4(0), vec4(0), vec4(0, -1, 0, 0)),
+		mat4(vec4(1,0,0,0), vec4(0,1,0,0), vec4(0,0,1,0), vec4(0, -1, 0, 0)),
 		vec4(sqrt(75.0)),
 		1,
 		vec4(5.0, 0.05, 5.0, 0.0),
 		0,
 		vec3(0.9, 0.9, 0.9)
+	),
+	Object(
+		mat4(vec4(1,0,0,0), vec4(0,1,0,0), vec4(0,0,1,0), vec4(0)),
+		vec4(0.4),
+		0,
+		vec4(0.4),
+		2,
+		vec3(1.0, 0.5, 0.2)
 	)
 };
