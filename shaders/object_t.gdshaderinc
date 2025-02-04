@@ -1,25 +1,22 @@
 struct Object
 {
     mat4 transform;
-	
 
 	// axis-aligned bounding box sizes x y z, bounding sphere radius w
     vec4 boundingVolume;    
     
-
 	// shape type that together with shapeVars defines object's shape
 	// 	0: sphere, 			radius = shapeVars.w
 	// 	1: box, 			dimensions = shapeVars.xyz
 	// 	2: menger sponge, 	dimensions = shapeVars.xyz, hole ratio = shapeVars.w
 	int shapeType;
-	
-	
+
 	vec4 shapeVars;
     
-	
+	// 0: reflective
+	// 1: diffuse
 	int surfaceType;
-	
-	
+
 	vec3 color;
 };
 
@@ -29,8 +26,8 @@ const Object _objects[_nObjects] = {
 		mat4(1.0), 
 		vec4(sqrt(0.75)), 
 		2, 
-		vec4(0.5, 0.5, 0.5, 3),
-		0,
+		vec4(0.5, 0.5, 0.5, 4),
+		1,
 		vec3(0.9, 0.1, 0.1)
 	),
 	Object(

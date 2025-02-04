@@ -9,19 +9,20 @@ vec3 trace(Ray ray)
 	vec3 incomingLight = vec3(0);
 	vec3 rayColor = vec3(1);
 
-    for (int i = 0; i <= _nMaxBounces; i++)
+	int hits = 0;
+	bool continueTrace;
+	do
     {
         HitInfo hitInfo = findClosestHit(ray);
         if (hitInfo.objectIndex == -1)
-        {
-			incomingLight += float(i != 0) * _environmentLight * rayColor;
-            break;
-        }
+			break;
 		
-		vec3 surfaceColor = surfaceHit(hitInfo, ray);
+		vec3 surfaceColor;
+		continueTrace = surfaceHit(hitInfo, ray, surfaceColor);
 		rayColor *= surfaceColor;
 		incomingLight += vec3(1e-5);
     }
+    while (++hits <= _nMaxBounces && continueTrace);
 	
-    return incomingLight;
+    return float(hits != 0) * (incomingLight + _environmentLight * rayColor);
 }
