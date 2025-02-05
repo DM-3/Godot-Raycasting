@@ -11,7 +11,8 @@ shader_parameter/_marchHitDistance = 0.001
 shader_parameter/_maxMarchSteps = 70
 shader_parameter/_maxGravitySteps = 100
 shader_parameter/_ambientLight = Color(0.63, 0.81, 0.92, 1)
-shader_parameter/_nMaxBounces = 2
+shader_parameter/_nMaxBounces = 4
+shader_parameter/nRaysPerPixel = 1
 shader_parameter/source_panorama = ExtResource("2_x33gi")
 
 [sub_resource type="BoxMesh" id="BoxMesh_nck6m"]
@@ -42,7 +43,7 @@ sky = SubResource("Sky_yaivx")
 [node name="Stage" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 2, 0, 0, 0, 10, 0, 0, 0)
+transform = Transform3D(9.99677, 0, 0, 0, 2.37457, 0, 0, 0, 9.99677, 0, 0, 0)
 mesh = SubResource("BoxMesh_nck6m")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

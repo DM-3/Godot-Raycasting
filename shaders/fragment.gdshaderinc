@@ -1,7 +1,7 @@
 #include "vertex.gdshaderinc"
 #include "trace.gdshaderinc"
 
-const int nRaysPerPixel = 1;
+uniform int nRaysPerPixel = 1;
 
 void fragment()
 {
@@ -14,7 +14,10 @@ void fragment()
     // trace rays from camera through scene
     vec3 incomingLight = vec3(0);
     for (int i = 0; i < nRaysPerPixel; i++)
+	{
+		ray.direction = normalize(ray.direction + vec3(ivec3(i % 2, i / 2 % 2, i / 4 % 2)) * 0.0002);
         incomingLight += trace(ray);
+	}
 
 	ALBEDO = incomingLight / float(nRaysPerPixel);
 }
