@@ -1,7 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://brxhbexkofnb5"]
+[gd_scene load_steps=16 format=3 uid="uid://brxhbexkofnb5"]
 
 [ext_resource type="Shader" path="res://shaders/raycast.gdshader" id="1_wdhim"]
 [ext_resource type="Texture2D" uid="uid://ldsmo73kvj4n" path="res://assets/market_square_cesky_tesin.jpg" id="2_x33gi"]
+[ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="3_jyelm"]
+[ext_resource type="PackedScene" uid="uid://l2n30mpbkdyw" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn" id="4_63kco"]
+[ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_co4dq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6yqov"]
 render_priority = 0
@@ -40,6 +43,18 @@ sky_material = SubResource("ShaderMaterial_spsyo")
 background_mode = 2
 sky = SubResource("Sky_yaivx")
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g2iws"]
+radius = 0.251384
+height = 1.79972
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e4wqf"]
+size = Vector3(10, 0.1, 10)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_esfke"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_6khva"]
+radius = 0.3
+
 [node name="Stage" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -48,3 +63,41 @@ mesh = SubResource("BoxMesh_nck6m")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_atrtm")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.957, 1)
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="XRLeftController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"left_hand"
+
+[node name="LeftHand" parent="XROrigin3D/XRLeftController" instance=ExtResource("3_jyelm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.321667, 0.999947, 0)
+
+[node name="XRRightController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+
+[node name="RightHand" parent="XROrigin3D/XRRightController" instance=ExtResource("4_63kco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.325657, 0.989966, 0.00735188)
+
+[node name="PlayerBody" parent="XROrigin3D" instance=ExtResource("6_co4dq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.00029)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/PlayerBody"]
+shape = SubResource("CapsuleShape3D_g2iws")
+
+[node name="StaticColliders" type="StaticBody3D" parent="."]
+
+[node name="Floor" type="CollisionShape3D" parent="StaticColliders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.997713, 0)
+shape = SubResource("BoxShape3D_e4wqf")
+
+[node name="SphereGreen" type="CollisionShape3D" parent="StaticColliders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.6, 0.2)
+shape = SubResource("SphereShape3D_esfke")
+
+[node name="SphereBlue" type="CollisionShape3D" parent="StaticColliders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, -0.1, 0.1)
+shape = SubResource("SphereShape3D_6khva")
