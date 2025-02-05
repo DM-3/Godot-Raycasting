@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://brxhbexkofnb5"]
+[gd_scene load_steps=9 format=3 uid="uid://brxhbexkofnb5"]
 
 [ext_resource type="Shader" path="res://shaders/raycast.gdshader" id="1_wdhim"]
+[ext_resource type="Texture2D" uid="uid://ldsmo73kvj4n" path="res://assets/market_square_cesky_tesin.jpg" id="2_x33gi"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6yqov"]
 render_priority = 0
@@ -9,14 +10,40 @@ shader_parameter/_maxMarchDistance = 10.0
 shader_parameter/_marchHitDistance = 0.001
 shader_parameter/_maxMarchSteps = 70
 shader_parameter/_maxGravitySteps = 100
+shader_parameter/_ambientLight = Color(0.63, 0.81, 0.92, 1)
 shader_parameter/_nMaxBounces = 2
-shader_parameter/_environmentLight = Color(0.607522, 0.829453, 0.983869, 1)
+shader_parameter/source_panorama = ExtResource("2_x33gi")
 
 [sub_resource type="BoxMesh" id="BoxMesh_nck6m"]
 material = SubResource("ShaderMaterial_6yqov")
+
+[sub_resource type="Shader" id="Shader_qr6x2"]
+code = "shader_type sky;
+
+#include \"res://shaders/environment.gdshaderinc\"
+
+void sky() 
+{
+	COLOR = texture(source_panorama, SKY_COORDS).rgb;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_spsyo"]
+shader = SubResource("Shader_qr6x2")
+shader_parameter/source_panorama = ExtResource("2_x33gi")
+
+[sub_resource type="Sky" id="Sky_yaivx"]
+sky_material = SubResource("ShaderMaterial_spsyo")
+
+[sub_resource type="Environment" id="Environment_atrtm"]
+background_mode = 2
+sky = SubResource("Sky_yaivx")
 
 [node name="Stage" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 2, 0, 0, 0, 10, 0, 0, 0)
 mesh = SubResource("BoxMesh_nck6m")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_atrtm")

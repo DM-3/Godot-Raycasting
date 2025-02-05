@@ -29,7 +29,7 @@ const Object _objects[_nObjects] = {
 		2, 
 		vec4(0.5, 0.5, 0.5, 4),
 		1,
-		vec3(0.9, 0.1, 0.1)
+		vec3(1.0, 0.1, 0.1)
 	),
 	Object(
 		mat4(vec4(1,0,0,0), vec4(0,1,0,0), vec4(0,0,1,0), vec4(-1, .6, 0.2, 0)),
@@ -53,7 +53,7 @@ const Object _objects[_nObjects] = {
 		1,
 		vec4(5.0, 0.05, 5.0, 0.0),
 		0,
-		vec3(0.9, 0.9, 0.9)
+		vec3(0.8, 0.8, 0.8)
 	),
 	Object(
 		mat4(vec4(1,0,0,0), vec4(0,1,0,0), vec4(0,0,1,0), vec4(0)),
